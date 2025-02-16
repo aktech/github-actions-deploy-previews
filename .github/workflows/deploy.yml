@@ -35,7 +35,6 @@ jobs:
       - name: Setup FRP Tunnel
         uses: cirunlabs/frp-tunnel-action@v1.2.0
         with:
-          timeout_minutes: '60'
           frp_client_config: |
             serverAddr = "${{ secrets.FRP_SERVER }}"
             serverPort = 7000
@@ -55,3 +54,33 @@ jobs:
             localIP = "127.0.0.1"
             localPort = 8000
             remotePort = 8100
+
+      - name: Comment PR
+        if: github.event_name == 'pull_request'
+        uses: thollander/actions-comment-pull-request@v3
+        with:
+          message: |
+            Preview has been deployed! :rocket:
+            SSH: `ssh -p 6100 runner@${{ secrets.FRP_SERVER }}`
+            HTTP: `http://${{ secrets.FRP_SERVER }}:8100`
+
+      - name: Wait for label removal
+        if: github.event_name == 'pull_request'
+        run: |
+          pr_number=${{ github.event.pull_request.number }}
+          label_to_wait_for="deploy"
+          repo=${{ github.repository }}
+
+          echo "Monitoring PR #$pr_number for removal of label '$label_to_wait_for'..."
+
+          while true; do
+            labels=$(gh pr view $pr_number --repo $repo --json labels --jq '.labels[].name')
+
+            if [[ ! "$labels" =~ "$label_to_wait_for" ]]; then
+              echo "Label '$label_to_wait_for' has been removed. Continuing workflow..."
+              break
+            fi
+
+            echo "Label '$label_to_wait_for' still present. Rechecking in 30 seconds..."
+            sleep 30
+          done
