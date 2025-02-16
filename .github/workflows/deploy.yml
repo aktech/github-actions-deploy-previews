@@ -37,7 +37,7 @@ jobs:
         with:
           timeout_minutes: '60'
           frp_client_config: |
-            serverAddr = "{{ secrets.FRP_SERVER }}"
+            serverAddr = "${{ secrets.FRP_SERVER }}"
             serverPort = 7000
             auth.method = "token"
             auth.token = "${{ secrets.FRP_TOKEN }}"
