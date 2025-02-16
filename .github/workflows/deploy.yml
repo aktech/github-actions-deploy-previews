@@ -47,7 +47,7 @@ jobs:
             type = "tcp"
             localIP = "127.0.0.1"
             localPort = 22
-            remotePort = 6000
+            remotePort = 6100
 
             [[proxies]]
             name = "github-runner-http--${{ github.run_id }}-${{ github.sha }}"
