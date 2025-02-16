@@ -44,14 +44,14 @@ jobs:
 
             [[proxies]]
             name = "github-runner-ssh--${{ github.run_id }}-${{ github.sha }}"
-            type = tcp
+            type = "tcp"
             localIP = "127.0.0.1"
             localPort = 22
             remotePort = 6000
 
             [[proxies]]
             name = "github-runner-http--${{ github.run_id }}-${{ github.sha }}"
-            type = http
+            type = "http"
             localIP = "127.0.0.1"
             localPort = 8000
             remotePort = 8100
