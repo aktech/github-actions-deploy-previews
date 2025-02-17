@@ -4,6 +4,10 @@
 This repository enables automatic deployment of preview environments for pull requests using GitHub Actions, Docker Compose, and Traefik.
 via [FRP tunnel](https://github.com/cirunlabs/frp-tunnel-action)
 
+
+![Screenshot 2025-02-17 at 7 10 12 pm](https://github.com/user-attachments/assets/110310e7-5173-49fe-9ee8-21715f268f45)
+
+
 ## Features
 - **Automatic Deployment**: Deploys a preview environment for each pull request labeled with `deploy`.
 - **Traefik for Reverse Proxy**: Uses Traefik for HTTPS and automatic Let's Encrypt SSL certificate management.
