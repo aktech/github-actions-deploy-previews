@@ -85,6 +85,9 @@ jobs:
             SSH: `ssh -o 'proxycommand socat - PROXY:frp.iakte.ch:%h:%p,proxyport=5002' runner@${{ env.SSH_DNS }}`
             App deployed at: https://${{ env.APP_DNS }}/
 
+      - name: Docker compose logs
+        run: docker compose logs
+
       - name: Wait for label removal
         if: github.event_name == 'pull_request'
         run: |
