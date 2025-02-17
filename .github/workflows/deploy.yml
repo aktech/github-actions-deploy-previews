@@ -25,6 +25,14 @@ jobs:
             echo "APP_DNS=app-pr-${{ github.event.pull_request.number }}.iakte.ch" >> $GITHUB_ENV
             echo "SSH_DNS=ssh-pr-${{ github.event.pull_request.number }}.iakte.ch" >> $GITHUB_ENV
 
+      - name: Restore Let's Encrypt Cache
+        uses: actions/cache@v4.2.0
+        with:
+          path: letsencrypt
+          key: letsencrypt-${{ runner.os }}
+          restore-keys: |
+            letsencrypt-${{ runner.os }}
+
       - name: Deploy a whoami app
         run: |
           echo "Deploying whoami app"
@@ -108,3 +116,9 @@ jobs:
             echo "Label '$label_to_wait_for' still present. Rechecking in 30 seconds..."
             sleep 30
           done
+      - name: Cache Let's Encrypt Data
+        if: success()
+        uses: actions/cache@v4.2.0
+        with:
+          path: letsencrypt
+          key: letsencrypt-${{ runner.os }}
