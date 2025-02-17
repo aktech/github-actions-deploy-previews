@@ -7,7 +7,6 @@ on:
   pull_request:
     types: [labeled, synchronize]
 
-
 jobs:
   deploy:
     if: contains(github.event.pull_request.labels.*.name, 'deploy')
@@ -21,22 +20,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-#      - name: Setup Python
-#        uses: actions/setup-python@v5.4.0
-#        with:
-#          python-version: '3.13'
-#
-#      - name: Install Dependencies
-#        run: |
-#          echo "Installing Dependencies"
-#          pip install -r requirements.txt
-#          echo "Installed Dependencies"
-#
-#      - name: Deploy FastAPI App
-#        run: |
-#          echo "Deploying FastAPI App"
-#          python -m uvicorn app:app &
-#          echo "Deployed FastAPI App"
+      - name: Set APP_DNS and SSH url Variable
+        run: |
+            echo "APP_DNS=app-pr-${{ github.event.pull_request.number }}.iakte.ch" >> $GITHUB_ENV
+            echo "SSH_DNS=ssh-pr-${{ github.event.pull_request.number }}.iakte.ch" >> $GITHUB_ENV
 
       - name: Deploy a whoami app
         run: |
@@ -44,9 +31,8 @@ jobs:
           APP_DNS=$APP_DNS docker compose pull
           APP_DNS=$APP_DNS docker compose up -d
           echo "Deployed whoami app"
-          sleep 10
         env:
-          APP_DNS: app.iakte.ch
+          APP_DNS: ${{ env.APP_DNS }}
           CLOUDFLARE_DNS_API_TOKEN: ${{ secrets.CLOUDFLARE_DNS_API_TOKEN }}
 
       - name: Add a DNS record
@@ -57,7 +43,7 @@ jobs:
             -H "Content-Type: application/json" \
             --data '{
             "type": "A",
-            "name": "app.iakte.ch",
+            "name": "'"$APP_DNS"'",
             "content": "144.21.49.62",
             "ttl": 3600,
             "proxied": false
@@ -81,14 +67,14 @@ jobs:
             multiplexer = "httpconnect"
             localIP = "127.0.0.1"
             localPort = 22
-            customDomains = ["ssh.iakte.ch"]
+            customDomains = ["${{ env.SSH_DNS }}"]
 
             [[proxies]]
             name = "github-runner-http--${{ github.run_id }}-${{ github.sha }}"
             type = "https"
             localIP = "127.0.0.1"
             localPort = 443
-            customDomains = ["app.iakte.ch"]
+            customDomains = ["${{ env.APP_DNS }}"]
 
       - name: Comment PR
         if: github.event_name == 'pull_request'
@@ -96,8 +82,8 @@ jobs:
         with:
           message: |
             Preview has been deployed! :rocket:
-            SSH: `ssh -o 'proxycommand socat - PROXY:frp.iakte.ch:%h:%p,proxyport=5002' runner@ssh.iakte.ch`
-            App deployed at: `http://app.iakte.ch/`
+            SSH: `ssh -o 'proxycommand socat - PROXY:frp.iakte.ch:%h:%p,proxyport=5002' runner@${{ env.SSH_DNS }}`
+            App deployed at: `https://${{ env.APP_DNS }}/`
 
       - name: Wait for label removal
         if: github.event_name == 'pull_request'
