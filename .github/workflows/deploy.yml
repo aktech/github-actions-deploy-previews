@@ -25,13 +25,13 @@ jobs:
             echo "APP_DNS=app-pr-${{ github.event.pull_request.number }}.iakte.ch" >> $GITHUB_ENV
             echo "SSH_DNS=ssh-pr-${{ github.event.pull_request.number }}.iakte.ch" >> $GITHUB_ENV
 
-#      - name: Restore Let's Encrypt wildcard certs cache
-#        uses: actions/cache@v4.2.0
-#        with:
-#          path: letsencrypt
-#          key: letsencrypt-${{ runner.os }}
-#          restore-keys: |
-#            letsencrypt-${{ runner.os }}
+      - name: Restore Let's Encrypt wildcard certs cache
+        uses: actions/cache@v4.2.0
+        with:
+          path: letsencrypt
+          key: letsencrypt-${{ runner.os }}
+          restore-keys: |
+            letsencrypt-${{ runner.os }}
 
       - name: Deploy a whoami app
         run: |
@@ -125,9 +125,9 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
 
-#      - name: Cache Let's Encrypt wildcard certs data
-#        if: success()
-#        uses: actions/cache@v4.2.0
-#        with:
-#          path: letsencrypt
-#          key: letsencrypt-${{ runner.os }}
+      - name: Cache Let's Encrypt wildcard certs data
+        if: success()
+        uses: actions/cache@v4.2.0
+        with:
+          path: letsencrypt
+          key: letsencrypt-${{ runner.os }}
