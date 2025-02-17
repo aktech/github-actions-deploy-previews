@@ -109,14 +109,17 @@ jobs:
       - name: Docker compose logs
         run: docker compose logs
 
-      - name: Wait for label removal
+      - name: Wait for label removal or timeout
         if: github.event_name == 'pull_request'
         run: |
           pr_number=${{ github.event.pull_request.number }}
           label_to_wait_for="deploy"
           repo=${{ github.repository }}
+          timeout_seconds=1800  # 30 minutes
+          interval=30  # Check every 30 seconds
+          elapsed=0
 
-          echo "Monitoring PR #$pr_number for removal of label '$label_to_wait_for'..."
+          echo "Monitoring PR #$pr_number for removal of label '$label_to_wait_for'... (Timeout: 30 minutes)"
 
           while true; do
             labels=$(gh pr view $pr_number --repo $repo --json labels --jq '.labels[].name')
@@ -126,9 +129,16 @@ jobs:
               break
             fi
 
-            echo "Label '$label_to_wait_for' still present. Rechecking in 30 seconds..."
-            sleep 30
+            if [[ $elapsed -ge $timeout_seconds ]]; then
+              echo "Timeout reached (30 minutes). Label '$label_to_wait_for' still present. Exiting."
+              exit 1  # Exit with failure to indicate timeout
+            fi
+
+            echo "Label '$label_to_wait_for' still present. Rechecking in $interval seconds..."
+            sleep $interval
+            ((elapsed+=interval))
           done
+
         env:
           GH_TOKEN: ${{ github.token }}
 
