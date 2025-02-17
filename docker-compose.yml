@@ -42,9 +42,9 @@ services:
 
   httpbin:
     image: ghcr.io/psf/httpbin:0.10.2
-    container_name: whoami
+    container_name: httpbin
     restart: unless-stopped
     labels:
       - traefik.enable=true
-      - traefik.http.routers.whoami.rule=Host(`${APP_DNS}`)
-      - traefik.http.routers.whoami.entrypoints=https
+      - traefik.http.routers.httpbin.rule=Host(`${APP_DNS}`)
+      - traefik.http.routers.httpbin.entrypoints=https
