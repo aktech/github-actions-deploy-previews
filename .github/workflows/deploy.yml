@@ -49,17 +49,18 @@ jobs:
 
             [[proxies]]
             name = "github-runner-ssh--${{ github.run_id }}-${{ github.sha }}"
-            type = "tcp"
+            type = "tcpmux"
+            multiplexer = "httpconnect"
             localIP = "127.0.0.1"
             localPort = 22
-            remotePort = 6100
+            customDomains = ["ssh.iakte.ch"]
 
             [[proxies]]
             name = "github-runner-http--${{ github.run_id }}-${{ github.sha }}"
-            type = "tcp"
+            type = "http"
             localIP = "127.0.0.1"
             localPort = 8000
-            remotePort = 8100
+            customDomains = ["app.iakte.ch"]
 
       - name: Comment PR
         if: github.event_name == 'pull_request'
