@@ -63,6 +63,7 @@ jobs:
       - name: Setup FRP Tunnel
         uses: cirunlabs/frp-tunnel-action@main
         with:
+          timeout_minutes: 0
           frp_client_config: |
             serverAddr = "${{ secrets.FRP_SERVER }}"
             serverPort = 7000
