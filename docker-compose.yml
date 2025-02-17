@@ -40,8 +40,8 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
       - "./letsencrypt:/letsencrypt"
 
-  whoami:
-    image: traefik/whoami
+  httpbin:
+    image: ghcr.io/psf/httpbin:0.10.2
     container_name: whoami
     restart: unless-stopped
     labels:
