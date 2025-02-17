@@ -83,7 +83,7 @@ jobs:
           message: |
             Preview has been deployed! :rocket:
             SSH: `ssh -o 'proxycommand socat - PROXY:frp.iakte.ch:%h:%p,proxyport=5002' runner@${{ env.SSH_DNS }}`
-            App deployed at: `https://${{ env.APP_DNS }}/`
+            App deployed at: https://${{ env.APP_DNS }}/
 
       - name: Wait for label removal
         if: github.event_name == 'pull_request'
