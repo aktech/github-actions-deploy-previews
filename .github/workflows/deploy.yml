@@ -135,6 +135,10 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
 
+      - name: Adjust permissions for Let's Encrypt before caching
+        run: |
+          sudo chmod -R 755 /etc/letsencrypt
+
       - name: Cache Let's Encrypt wildcard certs data
         if: success()
         uses: actions/cache@v4.2.0
