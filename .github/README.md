@@ -8,6 +8,12 @@ via [FRP tunnel](https://github.com/cirunlabs/frp-tunnel-action)
 ![Screenshot 2025-02-17 at 7 10 12 pm](https://github.com/user-attachments/assets/110310e7-5173-49fe-9ee8-21715f268f45)
 
 
+### Deployed app at: (`https://app-pr-{PR-NUMBER}.iakte.ch`):
+
+![Screenshot 2025-02-17 at 7 14 17 pm](https://github.com/user-attachments/assets/b3265a95-2c42-4207-8f54-c65e6704d842)
+
+
+
 ## Features
 - **Automatic Deployment**: Deploys a preview environment for each pull request labeled with `deploy`.
 - **Traefik for Reverse Proxy**: Uses Traefik for HTTPS and automatic Let's Encrypt SSL certificate management.
