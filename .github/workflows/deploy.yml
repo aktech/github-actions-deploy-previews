@@ -33,6 +33,11 @@ jobs:
           restore-keys: |
             letsencrypt-${{ runner.os }}
 
+      - name: Adjust permissions for Let's Encrypt before caching
+        run: |
+          mkdir -p letsencrypt
+          sudo chmod -R 600 letsencrypt
+
       - name: Deploy a whoami app
         run: |
           echo "Deploying whoami app"
