@@ -39,7 +39,7 @@ jobs:
           echo "Deployed FastAPI App"
 
       - name: Setup FRP Tunnel
-        uses: cirunlabs/frp-tunnel-action@v1.2.0
+        uses: cirunlabs/frp-tunnel-action@main
         with:
           frp_client_config: |
             serverAddr = "${{ secrets.FRP_SERVER }}"
