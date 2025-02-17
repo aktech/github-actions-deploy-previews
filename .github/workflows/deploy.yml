@@ -91,8 +91,13 @@ jobs:
         with:
           message: |
             Preview has been deployed! :rocket:
-            SSH: `ssh -o 'proxycommand socat - PROXY:frp.iakte.ch:%h:%p,proxyport=5002' runner@${{ env.SSH_DNS }}`
-            App deployed at: https://${{ env.APP_DNS }}/
+
+            App deployed at: https://${{ env.APP_DNS }}
+            You can ssh into the runner via:
+
+              ```bash
+              ssh -o 'proxycommand socat - PROXY:${{ env.APP_DNS }}:%h:%p,proxyport=5002' runner@${{ env.SSH_DNS }}
+              ```
 
       - name: Docker compose logs
         run: docker compose logs
