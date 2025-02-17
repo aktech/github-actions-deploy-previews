@@ -145,7 +145,7 @@ jobs:
 
       - name: Adjust permissions for Let's Encrypt before caching
         run: |
-          sudo chmod -R 600 letsencrypt
+          sudo chmod -R 755 letsencrypt
 
       - name: Cache Let's Encrypt wildcard certs data
         if: success()
