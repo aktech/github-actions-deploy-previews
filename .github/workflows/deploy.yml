@@ -38,7 +38,7 @@ jobs:
           mkdir -p letsencrypt
           sudo chmod -R 600 letsencrypt
 
-      - name: Deploy a whoami app
+      - name: Deploy an app (httpbin)
         run: |
           echo "Deploying whoami app"
           APP_DNS=$APP_DNS docker compose pull
