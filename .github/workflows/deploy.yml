@@ -105,9 +105,14 @@ jobs:
           message: |
             Preview has been deployed! :rocket:
 
-            | **Name**        | **Status** | **Preview** | **SSH Access** | **Updated (UTC)** | **Deployed by** | **Commit Hash** |
-            | :-------------- | :--------- | :---------- | :------------- | :---------------- | :-------------- | :-------------- |
-            | **App Preview** | ✅ Ready   | [Visit Preview](https://${{ env.APP_DNS }}) | ```bash\nssh -o 'proxycommand socat - PROXY:${{ env.APP_DNS }}:%h:%p,proxyport=5002' runner@${{ env.SSH_DNS }}\n``` | $(date -u '+%b %d, %Y %H:%M%p') | ${{ github.actor }} | `${{ github.sha }}` |
+            | **Name**        | **Status** | **Preview** | **Deployed by** | **Commit Hash** |
+            | :-------------- | :--------- | :---------- | :-------------- | :-------------- |
+            | **App Preview** | ✅ Ready   | [Visit Preview](https://${{ env.APP_DNS }}) | @${{ github.actor }} | `${{ github.sha }}` |
+
+            You can ssh into the runner via:
+            ```bash
+            ssh -o 'proxycommand socat - PROXY:${{ env.APP_DNS }}:%h:%p,proxyport=5002' runner@${{ env.SSH_DNS }}
+            ```
 
       - name: Docker compose logs
         run: docker compose logs
@@ -137,7 +142,7 @@ jobs:
 
       - name: Adjust permissions for Let's Encrypt before caching
         run: |
-          sudo chmod -R 755 /etc/letsencrypt
+          sudo chmod -R 755 letsencrypt
 
       - name: Cache Let's Encrypt wildcard certs data
         if: success()
