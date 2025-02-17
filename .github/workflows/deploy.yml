@@ -137,6 +137,7 @@ jobs:
             echo "Label '$label_to_wait_for' still present. Rechecking in $interval seconds..."
             sleep $interval
             ((elapsed+=interval))
+            echo "Elapsed time: $elapsed seconds"
           done
 
         env:
