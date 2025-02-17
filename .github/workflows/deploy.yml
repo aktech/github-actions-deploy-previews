@@ -85,19 +85,6 @@ jobs:
             localPort = 443
             customDomains = ["${{ env.APP_DNS }}"]
 
-      - name: Comment PR
-        if: github.event_name == 'pull_request'
-        uses: thollander/actions-comment-pull-request@v3
-        with:
-          message: |
-            Preview has been deployed! :rocket:
-
-            App deployed at: https://${{ env.APP_DNS }}
-            You can ssh into the runner via:
-
-              ```bash
-              ssh -o 'proxycommand socat - PROXY:${{ env.APP_DNS }}:%h:%p,proxyport=5002' runner@${{ env.SSH_DNS }}
-              ```
       - name: Comment PR with deploy preview
         if: github.event_name == 'pull_request'
         uses: thollander/actions-comment-pull-request@v3
