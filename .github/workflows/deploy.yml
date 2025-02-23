@@ -25,7 +25,7 @@ jobs:
             echo "APP_DNS=app-pr-${{ github.event.pull_request.number }}.iakte.ch" >> $GITHUB_ENV
             echo "SSH_DNS=ssh-pr-${{ github.event.pull_request.number }}.iakte.ch" >> $GITHUB_ENV
 
-      - name: Restore Let's Encrypt wildcard certs cache
+      - name: "Restore Let's Encrypt wildcard certs cache"
         uses: actions/cache@v4.2.0
         with:
           path: letsencrypt
@@ -33,6 +33,8 @@ jobs:
           restore-keys: |
             letsencrypt-${{ runner.os }}
 
+      - name: Debugging with tmate
+        uses: mxschmitt/action-tmate@v3.19
       - name: Adjust permissions for Let's Encrypt before caching
         run: |
           mkdir -p letsencrypt
@@ -147,7 +149,7 @@ jobs:
         run: |
           sudo chmod -R 755 letsencrypt
 
-      - name: Cache Let's Encrypt wildcard certs data
+      - name: "Cache Let's Encrypt wildcard certs data"
         if: success()
         uses: actions/cache@v4.2.0
         with:
