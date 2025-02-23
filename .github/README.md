@@ -70,3 +70,4 @@ The repository uses Docker Compose to manage the services:
 
 ## License
 This project is licensed under the MIT License.
+
