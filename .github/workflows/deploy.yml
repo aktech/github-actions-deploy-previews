@@ -33,8 +33,6 @@ jobs:
           restore-keys: |
             letsencrypt-${{ runner.os }}
 
-      - name: Debugging with tmate
-        uses: mxschmitt/action-tmate@v3.19
       - name: Adjust permissions for Let's Encrypt before caching
         run: |
           mkdir -p letsencrypt
